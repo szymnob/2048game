@@ -5,7 +5,6 @@ class Matrix:
     def __init__(self, size):
         self.size = size
         self.matrix = [[0 for _ in range(size)] for _ in range(size)]
-        print(self.matrix)
         self.add_new()
 
     def check_game_state(self):

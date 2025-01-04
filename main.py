@@ -19,6 +19,8 @@ class Game:
 
         self.matrix = Matrix(GRID)
 
+        self.clock = pygame.time.Clock()
+
     def restart(self):
         self.matrix = Matrix(GRID)
         self.running = True
@@ -28,7 +30,7 @@ class Game:
     def handle_event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     self.matrix.move_left()
@@ -39,7 +41,7 @@ class Game:
                 elif event.key == pygame.K_DOWN:
                     self.matrix.move_down()
                 elif event.key == pygame.K_q:
-                    pygame.quit()
+                    self.running = False
 
     def game_over(self):
         self.board.draw(self.screen, self.matrix)
@@ -52,24 +54,23 @@ class Game:
             event = pygame.event.wait()
             if event.type == pygame.QUIT:
                 pygame.quit()
-                exit()
             if event.type == pygame.KEYDOWN:
                 self.restart()
 
 
     def run(self):
         while self.running:
+            self.clock.tick(60)
+
             self.handle_event()
             self.game_state = self.matrix.check_game_state()
             self.board.draw(self.screen, self.matrix)
             pygame.display.flip()
 
             if self.game_state != "continue":
-                self.running = False
+                self.game_over()
 
-        self.game_over()
-
-
+        pygame.quit()
 
 if __name__ == "__main__":
     game = Game()
